@@ -1,0 +1,13 @@
+<div>
+  <div *ngFor="let location  of getCurrentConditions()" class="well">
+    <div>
+      <a class="close" click="onDelete(loc.zip)">&times;</a>
+      <h3>{{location.data.name}} ({{location.zip}})</h3>
+      <h4>Current conditions: {{location.data.weather[0].main}}</h4>
+      <h4>Temperatures today:</h4>
+      <p>
+        Current {{location.data.main.temp}} - Max {{location.data.main.temp_max}} - Min {{location.data.main.temp_min}}
+      </p>
+    </div>
+  </div>
+</div>
