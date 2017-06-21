@@ -15,11 +15,8 @@ export class ForecastsListComponent {
   constructor(private weatherService: WeatherService, route : ActivatedRoute) {
     route.params.subscribe(params => {
       this.zipcode = params['zipcode'];
-      this.forecast = weatherService.getForecast(this.zipcode);
+      weatherService.getForecast(this.zipcode)
+        .subscribe(data => this.forecast = data);
     });
-  }
-
-  getCurrentConditions() {
-    return this.weatherService.getCurrentConditions();
   }
 }

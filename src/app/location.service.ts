@@ -22,6 +22,15 @@ export class LocationService {
     this.weatherService.addCurrentConditions(zipcode);
   }
 
+  removeLocation(zipcode : string){
+    let index = this.locations.indexOf(zipcode);
+    if (index !== -1){
+      this.locations.splice(index, 1);
+      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
+      this.weatherService.removeCurrentConditions(zipcode);
+    }
+  }
+
   getLocations() : string[]{
     return this.locations;
   }
