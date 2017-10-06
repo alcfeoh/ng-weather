@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Http} from '@angular/http';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class WeatherService {
@@ -11,12 +11,11 @@ export class WeatherService {
   static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions = [];
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   addCurrentConditions(zipcode: string): void {
     // Here we make a request to get the curretn conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     this.http.get(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
-      .map(res => res.json())
       .subscribe(data => this.currentConditions.push({zip: zipcode, data: data}) );
   }
 
@@ -33,8 +32,7 @@ export class WeatherService {
 
   getForecast(zipcode: string): Observable<any> {
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.http.get(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`)
-      .map(res => res.json());
+    return this.http.get(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`);
 
   }
 
