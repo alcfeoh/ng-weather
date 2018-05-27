@@ -1,5 +1,4 @@
-import { Action } from '@ngrx/store';
-import {AddZipcode, ZipcodeActions, ZipcodeActionTypes} from '../zipcode.actions';
+import { ZipcodeActions, ZipcodeActionTypes} from '../zipcode.actions';
 
 
 export interface State {

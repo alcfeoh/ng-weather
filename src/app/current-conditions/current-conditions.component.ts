@@ -10,14 +10,9 @@ import {Router} from "@angular/router";
 })
 export class CurrentConditionsComponent {
 
-  constructor(private weatherService : WeatherService, private locationService : LocationService, private router : Router) {
+  zipcodes: Array<String>;
+
+  constructor() {
   }
 
-  getCurrentConditions() {
-    return this.weatherService.getCurrentConditions();
-  }
-
-  showForecast(zipcode : string){
-    this.router.navigate(['/forecast', zipcode])
-  }
 }
