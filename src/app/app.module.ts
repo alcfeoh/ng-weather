@@ -12,6 +12,10 @@ import { MainPageComponent } from './main-page/main-page.component';
 import {RouterModule} from "@angular/router";
 import {routing} from "./app.routing";
 import {HttpClientModule} from "@angular/common/http";
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,9 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     HttpClientModule,
     RouterModule,
-    routing
+    routing,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [LocationService, WeatherService],
   bootstrap: [AppComponent]
