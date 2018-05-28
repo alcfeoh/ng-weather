@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {WeatherService} from "../weather.service";
-import {LocationService} from "../location.service";
-import {Router} from "@angular/router";
+import {State} from '../reducers/index';
+import {Store} from '@ngrx/store';
+import {RemoveZipcode} from '../zipcode.actions';
 
 @Component({
   selector: 'app-current-conditions',
@@ -9,10 +9,16 @@ import {Router} from "@angular/router";
   styleUrls: ['./current-conditions.component.css']
 })
 export class CurrentConditionsComponent {
-
+''
   zipcodes: Array<String>;
 
-  constructor() {
+  constructor(private store: Store<State>) {
+    store.select(state => state.zipcodes)
+          .subscribe(zips => this.zipcodes = zips.zipcodes);
+  }
+
+  removeZip(zip: string) {
+    this.store.dispatch(new RemoveZipcode(zip));
   }
 
 }

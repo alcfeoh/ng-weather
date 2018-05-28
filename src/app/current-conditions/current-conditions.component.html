@@ -1,10 +1,10 @@
 <div>
   <div *ngFor="let zip of zipcodes" class="well flex">
     <div>
-      <h3>{{zip}})</h3>
+      <h3>{{zip}}</h3>
     </div>
     <div>
-      <span class="close">&times;</span>
+      <span class="close" (click)="removeZip(zip)">&times;</span>
     </div>
  </div>
 </div>
