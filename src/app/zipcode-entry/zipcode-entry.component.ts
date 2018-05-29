@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {State} from '../reducers';
-import {AddZipcode} from '../zipcode.actions';
+import {AddZipcode} from '../actions/zipcode.actions';
 
 @Component({
   selector: 'app-zipcode-entry',

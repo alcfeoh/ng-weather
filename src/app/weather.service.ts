@@ -9,25 +9,12 @@ export class WeatherService {
   static URL = 'http://api.openweathermap.org/data/2.5';
   static APPID = '5a4b2d457ecbef9eb2a71e480b947604';
   static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
-  private currentConditions = [];
 
   constructor(private http: HttpClient) { }
 
-  addCurrentConditions(zipcode: string): void {
-    // Here we make a request to get the curretn conditions data from the API. Note the use of backticks and an expression to insert the zipcode
-    this.http.get(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
-      .subscribe(data => this.currentConditions.push({zip: zipcode, data: data}) );
-  }
-
-  removeCurrentConditions(zipcode: string) {
-    for (let i in this.currentConditions){
-      if (this.currentConditions[i].zip == zipcode)
-        this.currentConditions.splice(+i, 1);
-    }
-  }
-
-  getCurrentConditions(): any[] {
-    return this.currentConditions;
+  loadCurrentConditions(zipcode: string): Observable<any> {
+    // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
+    return this.http.get(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`);
   }
 
   getForecast(zipcode: string): Observable<any> {

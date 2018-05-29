@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
-import {LocationService} from "./location.service";
 import { ForecastsListComponent } from './forecasts-list/forecasts-list.component';
 import {WeatherService} from "./weather.service";
 import { CurrentConditionsComponent } from './current-conditions/current-conditions.component';
@@ -16,6 +15,8 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { CurrentConditionsEffects } from './effects/current-conditions.effects';
 
 @NgModule({
   declarations: [
@@ -32,9 +33,10 @@ import { environment } from '../environments/environment';
     RouterModule,
     routing,
     StoreModule.forRoot(reducers, { metaReducers }),
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([CurrentConditionsEffects])
   ],
-  providers: [LocationService, WeatherService],
+  providers: [WeatherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

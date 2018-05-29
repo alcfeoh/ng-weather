@@ -1,4 +1,4 @@
-import { ZipcodeActions, ZipcodeActionTypes} from '../zipcode.actions';
+import { ZipcodeActions, ZipcodeActionTypes} from '../actions/zipcode.actions';
 
 
 export interface State {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {State} from '../reducers/index';
 import {Store} from '@ngrx/store';
-import {RemoveZipcode} from '../zipcode.actions';
+import {RemoveZipcode} from '../actions/zipcode.actions';
 
 @Component({
   selector: 'app-current-conditions',
