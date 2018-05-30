@@ -8,13 +8,16 @@ import {
 import { environment } from '../../environments/environment';
 import {reducer as zipCodeReducer} from './zip-codes.reducer';
 import {State as ZipCodeState} from './zip-codes.reducer';
+import {currentConditionsReducer, CurrentConditionsState} from './current-conditions.reducer';
 
 export interface State {
-  zipcodes: ZipCodeState
+  zipcodes: ZipCodeState,
+  currentConditions: CurrentConditionsState
 }
 
 export const reducers: ActionReducerMap<State> = {
-  zipcodes: zipCodeReducer
+  zipcodes: zipCodeReducer,
+  currentConditions: currentConditionsReducer
 };
 
 
