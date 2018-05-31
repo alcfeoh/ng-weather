@@ -22,3 +22,13 @@ export const reducers: ActionReducerMap<State> = {
 
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+
+export const selectZipcodeState = (state: State) => state.zipcodes;
+
+export const selectZipcodeList = createSelector(selectZipcodeState, (state: ZipCodeState) => state.zipcodes);
+
+export const selectCurrentConditionsState = (state: State) => state.currentConditions;
+
+export const selectCurrentConditionsMap = createSelector(selectCurrentConditionsState,
+    (state: CurrentConditionsState) => state.currentConditions);
+
