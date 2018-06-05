@@ -17,6 +17,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { CurrentConditionsEffects } from './effects/current-conditions.effects';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CurrentConditionsEffects } from './effects/current-conditions.effects';
     routing,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([CurrentConditionsEffects])
+    EffectsModule.forRoot([CurrentConditionsEffects]),
+    StoreRouterConnectingModule.forRoot({stateKey: 'router'})
   ],
   providers: [WeatherService],
   bootstrap: [AppComponent]

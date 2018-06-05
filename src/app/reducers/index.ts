@@ -9,15 +9,18 @@ import { environment } from '../../environments/environment';
 import {reducer as zipCodeReducer} from './zip-codes.reducer';
 import {State as ZipCodeState} from './zip-codes.reducer';
 import {currentConditionsReducer, CurrentConditionsState} from './current-conditions.reducer';
+import {routerReducer, RouterReducerState} from '@ngrx/router-store';
 
 export interface State {
   zipcodes: ZipCodeState,
-  currentConditions: CurrentConditionsState
+  currentConditions: CurrentConditionsState,
+  router: RouterReducerState
 }
 
 export const reducers: ActionReducerMap<State> = {
   zipcodes: zipCodeReducer,
-  currentConditions: currentConditionsReducer
+  currentConditions: currentConditionsReducer,
+  router: routerReducer
 };
 
 
