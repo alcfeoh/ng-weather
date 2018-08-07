@@ -31,7 +31,9 @@
     "@angular/compiler-cli": "^6.0.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.109",
-    "jasmine-core": "~2.5.2",
+    "blue-harvest": "^0.2.1",
+    "jasmine": "~2.6.0",
+    "jasmine-core": "~2.6.4",
     "jasmine-spec-reporter": "~3.2.0",
     "karma": "~1.4.1",
     "karma-chrome-launcher": "~2.0.0",
@@ -40,7 +42,7 @@
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.0",
-    "ts-node": "~2.0.0",
+    "ts-node": "5.0.1",
     "tslint": "~4.5.0",
     "typescript": "2.7.2"
   }
