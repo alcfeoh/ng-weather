@@ -20,5 +20,13 @@
         "/assets/**"
       ]
     }
+  }],
+  "dataGroups": [{
+    "name": "WeetherAPI",
+    "urls": ["http://api.openweathermap.org/data/**"],
+    "cacheConfig": {
+      "maxAge": "6h",
+      "strategy": "freshness"
+    }
   }]
 }
