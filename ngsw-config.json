@@ -22,11 +22,13 @@
     }
   }],
   "dataGroups": [{
-    "name": "WeetherAPI",
-    "urls": ["http://api.openweathermap.org/data/**"],
-    "cacheConfig": {
-      "maxAge": "6h",
-      "strategy": "freshness"
-    }
-  }]
+      "name": "WeatherAPI",
+      "urls": [
+        "http://api.openweathermap.org/data/**"
+      ],
+      "cacheConfig": {
+        "maxAge": "6h",
+        "strategy": "freshness"
+      }
+    }]
 }
