@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {SwUpdate} from '@angular/service-worker';
+import {SwPush, SwUpdate} from '@angular/service-worker';
 import {interval} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {interval} from 'rxjs';
 })
 export class AppComponent {
 
-    constructor(updates: SwUpdate) {
+    constructor(updates: SwUpdate, push: SwPush, private http: HttpClient) {
         interval(10000).subscribe(() => updates.checkForUpdate());
 
         updates.available.subscribe(event => {
@@ -21,5 +22,15 @@ export class AppComponent {
             console.log('old version was', event.previous);
             console.log('new version is', event.current);
         });
+        console.log('Push code');
+        push.requestSubscription({serverPublicKey: 'BDTrenhMvFL5hexEce8suYQkMeXajUwKG0NdZboLhFBM3tgJ6ENXCxv3CZxiGPDoc_1v6848KMJiaMwSkLUea8g'}).then(
+            (success) => {
+                console.log(success);
+                this.http.post('http://localhost:9020/save-subscription', success).subscribe(()=> {
+                    push.messages.subscribe(message => console.log(message));
+                });
+            },
+            (error) => console.error(error)
+        )
     }
 }

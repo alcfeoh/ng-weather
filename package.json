@@ -21,11 +21,15 @@
     "@angular/platform-browser-dynamic": "6.1.1",
     "@angular/pwa": "^0.6.8",
     "@angular/router": "6.1.1",
+    "@angular/service-worker": "6.1.1",
+    "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.6",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
     "rxjs": "6.2.2",
-    "zone.js": "^0.8.26",
-    "@angular/service-worker": "6.1.1"
+    "web-push": "^3.3.2",
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.0",
