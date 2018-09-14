@@ -1,5 +1,7 @@
 
 var webpush = require('web-push');
+// Used that code to generate my set of keys - then saved those keys to be usedin this example
+// console.log(webpush.generateVAPIDKeys());
 var express = require('express');
 var bp = require('body-parser');
 var cors = require('cors');
