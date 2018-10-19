@@ -1,8 +1,8 @@
 import { browser, element, by } from 'protractor';
 
 export class NgWeatherPage {
-  navigateTo() {
-    return browser.get('/');
+  async navigateTo() {
+    return await browser.get('http://localhost:4200');
   }
 
   getParagraphText() {
