@@ -1,8 +1,8 @@
 # NgWeather
 
-A demo app that showcases how to build an app with Angular
+A demo app that showcases how to build an app with Angular (running on 9.0.5)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
 
 ## Development server
 
