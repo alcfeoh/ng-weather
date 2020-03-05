@@ -30,8 +30,4 @@ export class LocationService {
       this.weatherService.removeCurrentConditions(zipcode);
     }
   }
-
-  getLocations() : string[]{
-    return this.locations;
-  }
 }
