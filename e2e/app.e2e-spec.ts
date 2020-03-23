@@ -1,29 +1,44 @@
 import { NgWeatherPage } from './app.po';
-import {browser} from 'protractor';
-import * as fs from 'fs';
-
-import * as bh from 'blue-harvest';
+import {browser, By, element} from 'protractor';
 
 describe('ng-weather App', () => {
-  let page: NgWeatherPage;
+  let page: NgWeatherPage = new NgWeatherPage();
 
-  beforeEach(async() => {
-    await browser.get('http://localhost:4200')
-    let width = 1280;
-    let height = 900;
-    await browser.driver.manage().window().setSize(width, height);
-  });
+      beforeEach(async() => {
+        await page.navigateTo();
+      });
 
-  it('should have the right rendering', async() => {
-      let data = await browser.takeScreenshot();
-      let result = await bh.compareScreenshot(data, './e2e/screenshot.png');
-      expect(result).toBeTruthy();
-  });
+    it('should have the right rendering', async() => {
+        const text = await element(By.css('h2')).getText();
+        expect(text).toBe('Enter a zipcode:');
+        const button = await element(By.css('button')).getText();
+        expect(button).toBe('Add location');
+        const input = page.getAddLocationInput();
+        expect(input).toBeTruthy();
+    });
 
-  let createScreenshot = async(): string => {
-      let data = await browser.takeScreenshot();
-      let path = fs.writeFileSync('./e2e/screenshot.png', data, 'base64');
-      console.log('CREATED SCREENSHOT: ', path);
-      return path;
-  }
+    it('should be possible to add a new location', async() => {
+        page.getAddLocationInput().sendKeys('95742');
+        page.getAddLocationButton().click();
+        const text = await element(By.css('h3')).getText();
+        expect(text).toContain('Rancho Cordova');
+    });
+
+    it('should be possible to see a 5-day forecast', async() => {
+        await element(By.partialLinkText('Show 5-day forecast')).click();
+        expect(await browser.getCurrentUrl()).toContain('/forecast/95742');
+        const text = await element(By.css('h3')).getText();
+        expect(text).toContain('5-day forecast for Rancho Cordova');
+    });
+
+    it('should be possible to remove a location', async() => {
+        await element(By.className('close')).click();
+        const locations = await element.all((By.css('h3')));
+        expect(locations.length).toBe(0);
+    });
+
+    afterAll(() => {
+        localStorage.clear();
+    })
+
 });

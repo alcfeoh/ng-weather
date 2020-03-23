@@ -1,4 +1,4 @@
-import { browser, element, by } from 'protractor';
+import {browser, element, by, By, ElementFinder} from 'protractor';
 
 export class NgWeatherPage {
   async navigateTo() {
@@ -7,5 +7,13 @@ export class NgWeatherPage {
 
   getParagraphText() {
     return element(by.css('app-root h1')).getText();
+  }
+
+  getAddLocationButton(): ElementFinder {
+    return element(By.partialButtonText('Add location'));
+  }
+
+  getAddLocationInput(): ElementFinder {
+    return element(By.css('input'));
   }
 }
