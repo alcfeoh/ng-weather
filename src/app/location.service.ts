@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import {WeatherService} from "./weather.service";
+import {WeatherService} from './weather.service';
 
-export const LOCATIONS : string = "locations";
+export const LOCATIONS = 'locations';
 
 @Injectable()
 export class LocationService {
 
-  locations : string[] = [];
+  locations: string[] = [];
 
-  constructor(private weatherService : WeatherService) {
-    let locString = localStorage.getItem(LOCATIONS);
+  constructor(private weatherService: WeatherService) {
+    const locString = localStorage.getItem(LOCATIONS);
     if (locString)
       this.locations = JSON.parse(locString);
     for (let loc of this.locations)
       this.weatherService.addCurrentConditions(loc);
   }
 
-  addLocation(zipcode : string){
+  addLocation(zipcode: string): void {
     this.locations.push(zipcode);
     localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
     this.weatherService.addCurrentConditions(zipcode);
