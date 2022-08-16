@@ -11,4 +11,4 @@ const appRoutes: Routes = [
     path: 'forecast/:zipcode', component: ForecastsListComponent
   }
 ];
-export const routing: ModuleWithProviders<any> = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders<any> = RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' });
