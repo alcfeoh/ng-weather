@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, timer } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 export interface LocationConditions {
   zip: string;
@@ -15,10 +15,20 @@ export class WeatherService {
   static APPID = '5a4b2d457ecbef9eb2a71e480b947604';
   static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions: LocationConditions[] = [];
+  
+  private isAddingState: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  get isAdding$(): Observable<boolean> {
+    return this.isAddingState.asObservable();
+  }
 
   constructor(private http: HttpClient) { }
 
-  addCurrentConditions(zipcode: string, refreshInterval: number = 30000): void {
+  addCurrentConditions(zipcode: string, isNew: boolean, refreshInterval: number = 30000): void {
+    if (isNew) {
+      this.isAddingState.next(true);
+    }
+
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     this.currentConditions.push({
       zip: zipcode,
@@ -26,6 +36,11 @@ export class WeatherService {
         switchMap(() => this.http.get(
           `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`,
         )),
+        tap(() => {
+          if (isNew && this.isAddingState.value) {
+            this.isAddingState.next(false);
+          }
+        })
       )
     });
   }

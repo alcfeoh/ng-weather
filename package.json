@@ -23,6 +23,7 @@
     "@angular/service-worker": "14.1.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^3.4.1",
+    "bootstrap-icons": "^1.9.1",
     "core-js": "^2.6.9",
     "cors": "^2.8.5",
     "express": "^4.17.1",

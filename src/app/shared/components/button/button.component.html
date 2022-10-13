@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="currentState$ | async">
+  <ng-content *ngSwitchCase="ButtonState.Ready" select="[readyState]"></ng-content>
+  <ng-content *ngSwitchCase="ButtonState.Loading" select="[loadingState]"></ng-content>
+  <ng-content *ngSwitchCase="ButtonState.Success" select="[successState]"></ng-content>
+</ng-container>
