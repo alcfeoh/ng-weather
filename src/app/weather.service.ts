@@ -3,8 +3,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, timer } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-export interface LocationConditions {
-  zip: string;
+export interface LocationAttributes {
+  countryCode: string;
+  zipcode: string;
+}
+
+export interface LocationConditions extends LocationAttributes {
   data$: Observable<any>;
 }
 
@@ -24,17 +28,18 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  addCurrentConditions(zipcode: string, isNew: boolean, refreshInterval: number = 30000): void {
+  addCurrentConditions({ countryCode, zipcode }: LocationAttributes, isNew: boolean, refreshInterval: number = 30000): void {
     if (isNew) {
       this.isAddingState.next(true);
     }
 
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     this.currentConditions.push({
-      zip: zipcode,
+      countryCode,
+      zipcode,
       data$: timer(0, refreshInterval).pipe(
         switchMap(() => this.http.get(
-          `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`,
+          `${WeatherService.URL}/weather?zip=${zipcode},${countryCode}&units=imperial&APPID=${WeatherService.APPID}`,
         )),
         tap(() => {
           if (isNew && this.isAddingState.value) {
@@ -45,9 +50,9 @@ export class WeatherService {
     });
   }
 
-  removeCurrentConditions(zipcode: string) {
+  removeCurrentConditions({ countryCode, zipcode }: LocationAttributes) {
     for (let i in this.currentConditions){
-      if (this.currentConditions[i].zip == zipcode)
+      if (this.currentConditions[i].zipcode === zipcode && this.currentConditions[i].zipcode === countryCode)
         this.currentConditions.splice(+i, 1);
     }
   }

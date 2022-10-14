@@ -1,34 +1,50 @@
 import { Injectable } from '@angular/core';
 
-import { WeatherService } from './weather.service';
+import { LocationAttributes, WeatherService } from './weather.service';
 
 export const LOCATIONS : string = "locations";
 
 @Injectable()
 export class LocationService {
+  readonly locationKeySplitter = '-';
 
-  locations : string[] = [];
+  private locationsKeys: string[] = [];
 
-  constructor(private weatherService : WeatherService) {
+  constructor(private weatherService: WeatherService) {
     let locString = localStorage.getItem(LOCATIONS);
+
     if (locString)
-      this.locations = JSON.parse(locString);
-    for (let loc of this.locations)
-      this.weatherService.addCurrentConditions(loc, false);
+      this.locationsKeys = JSON.parse(locString);
+    for (let locationKey of this.locationsKeys)
+      this.weatherService.addCurrentConditions(this.parseLocationKey(locationKey), false);
   }
 
-  addLocation(zipcode : string){
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode, true);
+  addLocation(locationAttributes: LocationAttributes){
+    this.locationsKeys.push(this.getLocationKey(locationAttributes));
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locationsKeys));
+    this.weatherService.addCurrentConditions(locationAttributes, true);
   }
 
-  removeLocation(zipcode : string){
-    let index = this.locations.indexOf(zipcode);
+  removeLocation(locationAttributes: LocationAttributes){
+    let index = this.locationsKeys.indexOf(this.getLocationKey(locationAttributes));
+    
     if (index !== -1){
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+      this.locationsKeys.splice(index, 1);
+      localStorage.setItem(LOCATIONS, JSON.stringify(this.locationsKeys));
+      this.weatherService.removeCurrentConditions(locationAttributes);
     }
+  }
+
+  private getLocationKey({ countryCode, zipcode }: LocationAttributes): string {
+    return `${countryCode}${this.locationKeySplitter}${zipcode}`
+  }
+
+  private parseLocationKey(locationKey: string): LocationAttributes {
+    const locationKeyParts = locationKey.split(this.locationKeySplitter);
+
+    return {
+      countryCode: locationKeyParts[0], 
+      zipcode: locationKeyParts[1]
+    };
   }
 }

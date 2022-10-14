@@ -15,7 +15,7 @@
         </p>
       </div>
       <div>
-        <span class="close" (click)="locationService.removeLocation(location.zip)">&times;</span>
+        <span class="close" (click)="$event.stopPropagation(); locationService.removeLocation(location)">&times;</span>
         <img [src]="weatherService.getWeatherIcon(conditions.weather[0].id)">
       </div>
     </ng-container>

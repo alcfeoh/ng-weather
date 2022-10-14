@@ -1,10 +1,15 @@
 <div class="well">
-  <h2>Enter a zipcode:</h2>
-  <input type="text" #zipcode placeholder="Zipcode" class="form-control">
-  <br>
+  <form [formGroup]="form">
+    <h2>Enter a country:</h2>
+    <app-country-select formControlName="country" ></app-country-select>
+    <br>
+    <h2>Enter a zipcode:</h2>
+    <input type="text" placeholder="Zipcode" formControlName="zipcode" class="form-control">
+    <br>
+  </form>
 
   <app-button [isLoading$]="weatherService.isAdding$">
-    <button readyState class="btn btn-primary" (click)="addLocation(zipcode.value)">Add location</button>
+    <button readyState class="btn btn-primary" [class.disabled]="!form.valid" (click)="addLocation()">Add location</button>
     <button loadingState class="btn btn-primary disabled">Adding...</button>
     <button successState class="btn btn-success">
       <i class="bi bi-check2-circle"></i>

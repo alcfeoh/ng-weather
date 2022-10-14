@@ -1,0 +1,27 @@
+<div class="country-select"
+  #cdkOverlayOriginElement="cdkOverlayOrigin"
+  cdkOverlayOrigin
+>
+  <input #input class="form-control" placeholder="Country" [value]="inputFieldValue">
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  *ngIf="countries$ | async as countries"
+  [cdkConnectedOverlayOrigin]="cdkOverlayOriginElement"
+  [cdkConnectedOverlayOpen]="overlayOpen"
+  [cdkConnectedOverlayHasBackdrop]="true",
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop",
+  (backdropClick)="toggleOverlay()",
+>
+  <div class="options">
+    <div *ngFor="let country of countries; let i = index" class="option" (click)="selectOption(country)">
+      <span *ngIf="searchQuery; else name">
+        <span
+          *ngFor="let part of country.name.toLowerCase().split(searchQuery.toLowerCase()); let last = last; let first = first;"
+        ><span [class.capitalize]="first">{{ part }}</span><b *ngIf="!last" [class.capitalize]="!part">{{ searchQuery }}</b></span>
+      </span>
+      <ng-template #name>{{ country.name }}</ng-template>
+    </div>
+  </div>
+</ng-template>
