@@ -16,13 +16,13 @@ export class LocationService {
       this.weatherService.addCurrentConditions(loc);
   }
 
-  addLocation(zipcode : string){
+  addLocation(zipcode : string) {
     this.locations.push(zipcode);
     localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
     this.weatherService.addCurrentConditions(zipcode);
   }
 
-  removeLocation(zipcode : string){
+  removeLocation(zipcode : string) {
     let index = this.locations.indexOf(zipcode);
     if (index !== -1){
       this.locations.splice(index, 1);
