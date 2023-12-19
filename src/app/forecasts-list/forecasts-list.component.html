@@ -1,19 +1,17 @@
 <div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">5-day forecast for {{forecast?.city.name}}</h3>
-
+      <h3 class="panel-title">5-day forecast for {{ forecast?.city.name }}</h3>
     </div>
     <ul class="list-group">
       <li *ngFor="let dailyForecast of forecast?.list" class="list-group-item">
-        {{ (dailyForecast.dt * 1000) | date:'EEEE, MMM d'}}:
-        {{dailyForecast.weather[0].main}}
-        - Min: {{dailyForecast.temp.min | number:'.0-0'}}
-        - Max: {{dailyForecast.temp.max | number:'.0-0'}}
+        {{ dailyForecast.dt * 1000 | date : 'EEEE, MMM d' }}:
+        {{ dailyForecast.weather[0].main }}
+        - Min: {{ dailyForecast.temp.min | number : '.0-0' }} - Max: {{ dailyForecast.temp.max | number : '.0-0' }}
 
-        <img [src]="weatherService.getWeatherIcon(dailyForecast.weather[0].id)" class="icon">
+        <img [src]="weatherService.getWeatherIcon(dailyForecast.weather[0].id)" class="icon" />
       </li>
     </ul>
   </div>
 </div>
-<button class="btn btn-success" [routerLink]="'/'" >< Back to main page</button>
+<button class="btn btn-success" [routerLink]="'/'">< Back to main page</button>
