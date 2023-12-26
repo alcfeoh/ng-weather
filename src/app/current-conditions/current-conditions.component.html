@@ -1,11 +1,16 @@
-<div>
-    <div
-        *ngFor="let location of currentConditionsByZip()"
-        class="well flex"
-        (click)="showForecast(location.zip)"
+<app-tab-set
+    *ngIf="displayTabs()"
+    (removeTab)="locationService.removeLocation($event)"
+>
+    <app-tab
+        *ngFor="let location of currentConditionsByZipSortedByTimestamp(); let last = last;"
+        [active]="last"
+        [tabData]="{
+            id: location.zip,
+            title: location.data.name + ' (' + location.zip + ')'
+        }"
     >
         <div>
-            <h3>{{ location.data.name }} ({{ location.zip }})</h3>
             <h4>Current conditions: {{ location.data.weather[0].main }}</h4>
             <h4>Temperatures today:</h4>
             <p>
@@ -20,16 +25,11 @@
             </p>
         </div>
         <div>
-            <span
-                class="close"
-                (click)="locationService.removeLocation(location.zip)"
-                >&times;</span
-            >
             <img
                 [src]="
                     weatherService.getWeatherIcon(location.data.weather[0].id)
                 "
             />
         </div>
-    </div>
-</div>
+    </app-tab>
+</app-tab-set>

@@ -1,13 +1,13 @@
-<div>
+<div *ngIf="!(loadingForecast$ | async)">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                5-day forecast for {{ forecast?.city.name }}
+                5-day forecast for {{ currentForecast.city.name }}
             </h3>
         </div>
         <ul class="list-group">
             <li
-                *ngFor="let dailyForecast of forecast?.list"
+                *ngFor="let dailyForecast of currentForecast.list"
                 class="list-group-item"
             >
                 {{ dailyForecast.dt * 1000 | date: 'EEEE, MMM d' }}:

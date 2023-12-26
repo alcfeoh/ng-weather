@@ -1,0 +1,23 @@
+<ul class="nav nav-tabs">
+    <li
+        *ngFor="let tab of tabs; let i = index"
+        role="presentation"
+        [ngClass]="{ active: tab.active }"
+    >
+        <a class="btn btn-link" [routerLink]="" (click)="setActiveTab(i)"
+        ><span
+            style="margin-right: 1rem"
+            [innerHTML]="tab.tabData.title"
+        ></span>
+            <button
+                class="btn btn-danger"
+                title="Remove"
+                (click)="removeTabUpdateActiveTab(i)"
+            >
+                <span>&times;</span>
+            </button>
+        </a
+        >
+    </li>
+</ul>
+<ng-content></ng-content>

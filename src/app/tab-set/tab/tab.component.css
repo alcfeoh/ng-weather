@@ -1,0 +1,6 @@
+.tab-content-container {
+    border: solid 1px #ddd;
+    border-top: none;
+    width: 70rem;
+    padding: 1rem;
+}
