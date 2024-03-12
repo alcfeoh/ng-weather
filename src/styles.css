@@ -2,3 +2,11 @@
 body {
   padding: 10px;
 }
+
+.close {
+  cursor: pointer;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+}

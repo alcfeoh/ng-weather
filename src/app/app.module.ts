@@ -14,6 +14,11 @@ import {routing} from "./app.routing";
 import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {WeatherIconPipePipe} from './pipes/weather-icon.pipe';
+import {WeatherCachingService} from './weather-caching.service';
+import {TabComponent} from './shared/ui/tab.component';
+import {TabsComponent} from './shared/ui/tabs.component';
+import {CurrentConditionComponent} from './shared/ui/current-condition.component';
 
 @NgModule({
   declarations: [
@@ -21,17 +26,21 @@ import { environment } from '../environments/environment';
     ZipcodeEntryComponent,
     ForecastsListComponent,
     CurrentConditionsComponent,
-    MainPageComponent
+    MainPageComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    WeatherIconPipePipe,
+    TabComponent,
+    TabsComponent,
     RouterModule,
     routing,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    CurrentConditionComponent
   ],
-  providers: [LocationService, WeatherService],
+  providers: [LocationService, WeatherService, WeatherCachingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

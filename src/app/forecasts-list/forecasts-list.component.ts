@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {WeatherService} from '../weather.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {Forecast} from './forecast.type';
+import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-forecasts-list',
@@ -10,14 +12,13 @@ import {Forecast} from './forecast.type';
 })
 export class ForecastsListComponent {
 
-  zipcode: string;
-  forecast: Forecast;
+  private readonly route: ActivatedRoute = inject(ActivatedRoute)
+  private readonly weatherService: WeatherService = inject(WeatherService)
+  forecast$: Observable<Forecast>;
 
-  constructor(protected weatherService: WeatherService, route : ActivatedRoute) {
-    route.params.subscribe(params => {
-      this.zipcode = params['zipcode'];
-      weatherService.getForecast(this.zipcode)
-        .subscribe(data => this.forecast = data);
-    });
+  ngOnInit() {
+    this.forecast$ = this.route.params.pipe(
+        switchMap((params: Params) => this.weatherService.getForecast(params['zipcode']))
+    )
   }
 }
