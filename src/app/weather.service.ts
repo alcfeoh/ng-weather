@@ -17,7 +17,6 @@ export class WeatherService {
     constructor(private http: HttpClient) {}
 
     addCurrentConditions(zipcode: string): void {
-        console.log(WeatherService.URL);
         // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
         this.http
             .get<CurrentConditions>(
