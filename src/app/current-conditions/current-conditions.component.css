@@ -1,7 +1,12 @@
 .close {
-  cursor: pointer;
+    cursor: pointer;
 }
+
 .flex {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+}
+
+.well {
+    margin-bottom: 0 !important;
 }

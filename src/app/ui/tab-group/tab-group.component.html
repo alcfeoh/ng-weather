@@ -1,0 +1,14 @@
+<ng-container *ngIf="tabs.length > 0">
+    <div class="tabs">
+        <div class="tab" [class.active]="tab.active" *ngFor="let tab of tabs" (click)="selectTab(tab)">
+            <span>
+                {{ tab.title }}
+            </span>
+            <span class="close" (click)="closeTab($event, tab)">&times;</span>
+        </div>
+    </div>
+
+    <div class="content">
+        <ng-content></ng-content>
+    </div>
+</ng-container>

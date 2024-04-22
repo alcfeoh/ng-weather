@@ -1,7 +1,8 @@
 <html>
-  <head>
+
+<head>
     <title>Angular 2 QuickStart</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
@@ -9,7 +10,7 @@
     <!-- IE required polyfills, in this exact order -->
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
-    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
+    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
 
     <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
@@ -18,38 +19,40 @@
 
     <!-- 2. Configure SystemJS -->
     <script>
-      System.config({
-        packages: {        
-          app: {
-            format: 'register',
-            defaultExtension: 'js'
-          }
-        }
-      });
-      System.import('app/main')
+        System.config({
+            packages: {
+                app: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            }
+        });
+        System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
-  </head>
+</head>
 
-  <!-- 3. Display the application -->
-  <body>
-  <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-          <div class="container">
-              <div class="navbar-header">
-                  <a class="navbar-brand" href="#/">Weather App</a>
-              </div>
+<!-- 3. Display the application -->
 
-              <div class="collapse navbar-collapse" id="js-navbar-collapse">
+<body>
+    <div class="header">
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#/">Weather App</a>
+                </div>
 
-              </div>
-          </div>
-      </div>
-  </div>
+                <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
-  <div class="container">
-      <my-app>Loading...</my-app>
-  </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  </body>
+    <div class="container">
+        <my-app>Loading...</my-app>
+    </div>
+
+</body>
+
 </html>
