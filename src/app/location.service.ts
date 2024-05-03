@@ -1,33 +1,36 @@
-import { Injectable } from '@angular/core';
-import {WeatherService} from "./weather.service";
-
-export const LOCATIONS : string = "locations";
+import {Injectable, signal} from '@angular/core';
+export const LOCATIONS: string = 'locations';
 
 @Injectable()
 export class LocationService {
+  locations = signal<string[]>([]);
 
-  locations : string[] = [];
-
-  constructor(private weatherService : WeatherService) {
-    let locString = localStorage.getItem(LOCATIONS);
-    if (locString)
-      this.locations = JSON.parse(locString);
-    for (let loc of this.locations)
-      this.weatherService.addCurrentConditions(loc);
-  }
-
-  addLocation(zipcode : string) {
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode);
-  }
-
-  removeLocation(zipcode : string) {
-    let index = this.locations.indexOf(zipcode);
-    if (index !== -1){
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+  constructor() {
+    const locString = localStorage.getItem(LOCATIONS);
+    if (locString) {
+      this.locations.set(JSON.parse(locString));
     }
+  }
+
+  addLocation(zipcode: string): void {
+    if (this.locations().includes(zipcode)) {
+      alert(`You entered a location ${zipcode} already exists! Please try different one.`);
+      return;
+    }
+
+    this.locations.update((zipcodes) => [...zipcodes, zipcode]);
+    this.saveLocations();
+  }
+
+  removeLocation(zipcode: string): void {
+    const index = this.locations().indexOf(zipcode);
+    if (index !== -1) {
+      this.locations.update((zipcodes) => zipcodes.filter((item) => item !== zipcode));
+      this.saveLocations();
+    }
+  }
+
+  private saveLocations(): void {
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations()));
   }
 }
