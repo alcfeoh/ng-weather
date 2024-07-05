@@ -4,3 +4,8 @@ export interface ConditionsAndZip {
     zip: string;
     data: CurrentConditions;
 }
+
+export interface LocationUpdate {
+    action : string;
+    zip : string;
+}
