@@ -1,4 +1,4 @@
-import {browser, element, by, By, ElementFinder} from 'protractor';
+import { browser, element, by, By, ElementFinder } from 'protractor';
 
 export class NgWeatherPage {
   async navigateTo() {
