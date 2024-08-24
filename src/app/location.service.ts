@@ -1,31 +1,30 @@
-import { Injectable } from '@angular/core';
-import { WeatherService } from './weather.service';
+import { Injectable, Signal, signal } from '@angular/core';
 
 export const LOCATIONS: string = 'locations';
 
 @Injectable()
 export class LocationService {
-  locations: string[] = [];
+  private locationsSignal = signal<string[]>([]);
 
-  constructor(private weatherService: WeatherService) {
-    const locString = localStorage.getItem(LOCATIONS);
-    if (locString) this.locations = JSON.parse(locString);
-    for (const loc of this.locations)
-      this.weatherService.addCurrentConditions(loc);
+  constructor() {
+    const LOCATIONS_STRING = localStorage.getItem(LOCATIONS);
+    if (LOCATIONS_STRING)
+      this.locationsSignal.set(JSON.parse(LOCATIONS_STRING));
+  }
+
+  get locations(): Signal<string[]> {
+    return this.locationsSignal.asReadonly();
   }
 
   addLocation(zipcode: string) {
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode);
+    this.locationsSignal.update((locations) => [...locations, zipcode]);
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locationsSignal()));
   }
 
   removeLocation(zipcode: string) {
-    const index = this.locations.indexOf(zipcode);
-    if (index !== -1) {
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
-    }
+    this.locationsSignal.update((locations) =>
+      locations.filter((location) => location !== zipcode),
+    );
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locationsSignal()));
   }
 }
