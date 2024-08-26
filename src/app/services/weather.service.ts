@@ -4,11 +4,11 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { EMPTY, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ConditionsAndZip } from './conditions-and-zip.type';
-import { CurrentConditions } from './current-conditions/current-conditions.type';
-import { Forecast } from './forecasts-list/forecast.type';
+import { Forecast } from 'app/types/forecast.type';
+import { ConditionsAndZip } from '../types/conditions-and-zip.type';
+import { CurrentConditions } from '../types/current-conditions.type';
+import { CacheService } from './cache.service';
 import { LocationService } from './location.service';
-import { CacheService } from './shared/services/cache.service';
 
 @Injectable()
 export class WeatherService {

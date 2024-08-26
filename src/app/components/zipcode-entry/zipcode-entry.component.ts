@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { LocationService } from '../location.service';
+import { LocationService } from 'app/services/location.service';
 
 @Component({
   selector: 'app-zipcode-entry',
