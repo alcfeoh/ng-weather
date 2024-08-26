@@ -1,0 +1,9 @@
+<ul class="tab-list">
+    @for (tab of tabs; track $index) {
+        <li [class.active]="tab.active">
+            <span (click)="selectTab(tab)" (keydown.enter)="selectTab(tab)" tabindex="0">{{ tab.tabTitle }}</span>
+            <button (click)="removeTab(tab)">&times;</button>
+        </li>
+    }
+</ul>
+<ng-content></ng-content>
