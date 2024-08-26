@@ -8,6 +8,7 @@ import { ConditionsAndZip } from './conditions-and-zip.type';
 import { CurrentConditions } from './current-conditions/current-conditions.type';
 import { Forecast } from './forecasts-list/forecast.type';
 import { LocationService } from './location.service';
+import { CacheService } from './shared/services/cache.service';
 
 @Injectable()
 export class WeatherService {
@@ -18,6 +19,7 @@ export class WeatherService {
   private currentConditions = signal<ConditionsAndZip[]>([]);
   private http = inject(HttpClient);
   private locationService = inject(LocationService);
+  private cacheService = inject(CacheService);
 
   // Convert the Signal<string[]> to Observable<string[]>
   private locations$: Observable<string[]> = toObservable(
@@ -54,25 +56,35 @@ export class WeatherService {
   }
 
   addCurrentConditions(zipcode: string): void {
-    // Here we make a request to get the current conditions data from the API.
-    // Note the use of backticks and an expression to insert the zipcode
-    const url = `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`;
+    const cacheKey = `weather-current-${zipcode}`;
+    const cachedData = this.cacheService.getItem<CurrentConditions>(cacheKey);
 
-    this.http.get<CurrentConditions>(url).subscribe({
-      next: (data) => {
-        this.currentConditions.update((conditions) => [
-          ...conditions,
-          { zip: zipcode, data },
-        ]);
-      },
-      error: () => {
-        this.locationService.removeLocation(zipcode);
-        alert(`Failed to fetch weather data for ${zipcode}`);
-      },
-    });
+    if (cachedData) {
+      this.currentConditions.update((conditions) => [
+        ...conditions,
+        { zip: zipcode, data: cachedData },
+      ]);
+    } else {
+      const url = `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`;
+      this.http.get<CurrentConditions>(url).subscribe({
+        next: (data) => {
+          this.cacheService.setItem(cacheKey, data, 7200); // Cache for 7200 seconds (2 hours)
+          this.currentConditions.update((conditions) => [
+            ...conditions,
+            { zip: zipcode, data },
+          ]);
+        },
+        error: () => {
+          this.locationService.removeLocation(zipcode);
+          alert(`Failed to fetch weather data for ${zipcode}`);
+        },
+      });
+    }
   }
 
   removeCurrentConditions(zipcode: string) {
+    const cacheKey = `weather-current-${zipcode}`;
+    this.cacheService.removeItem(cacheKey);
     this.currentConditions.update((conditions) => {
       return conditions.filter((condition) => condition.zip !== zipcode);
     });
@@ -83,11 +95,26 @@ export class WeatherService {
   }
 
   getForecast(zipcode: string): Observable<Forecast> {
-    // Here we make a request to get the forecast data from the API.
-    // Note the use of backticks and an expression to insert the zipcode
-    return this.http.get<Forecast>(
-      `${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`,
-    );
+    const cacheKey = `weather-forecast-${zipcode}`;
+    const cachedData = this.cacheService.getItem<Forecast>(cacheKey);
+
+    if (cachedData) {
+      return new Observable<Forecast>((observer) => {
+        observer.next(cachedData);
+        observer.complete();
+      });
+    } else {
+      const url = `${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`;
+      return this.http.get<Forecast>(url).pipe(
+        switchMap((data) => {
+          this.cacheService.setItem(cacheKey, data, 7200); // Cache for 7200 seconds (2 hours)
+          return new Observable<Forecast>((observer) => {
+            observer.next(data);
+            observer.complete();
+          });
+        }),
+      );
+    }
   }
 
   getWeatherIcon(id): string {
