@@ -1,0 +1,28 @@
+.tab-list {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.tab-list li {
+  background-color: #eae9e9;
+  border-left:2px solid #ffffff;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab-list li.active {
+  background-color: #337ab7;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.tab-list li button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}

@@ -7,7 +7,7 @@ import { WeatherService } from '../weather.service';
 @Component({
   selector: 'app-current-conditions',
   templateUrl: './current-conditions.component.html',
-  styleUrls: ['./current-conditions.component.css'],
+  styleUrl: './current-conditions.component.css',
 })
 export class CurrentConditionsComponent {
   private router = inject(Router);
