@@ -8,14 +8,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
-import { CurrentConditionsComponent } from './current-conditions/current-conditions.component';
-import { ForecastsListComponent } from './forecasts-list/forecasts-list.component';
-import { LocationService } from './location.service';
-import { MainPageComponent } from './main-page/main-page.component';
-import { TabComponent } from './shared/components/tab/tab.component';
-import { TabsComponent } from './shared/components/tabs/tabs.component';
-import { WeatherService } from './weather.service';
-import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
+import { CurrentConditionsComponent } from './components/current-conditions/current-conditions.component';
+import { TabComponent } from './components/tab/tab.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { ZipcodeEntryComponent } from './components/zipcode-entry/zipcode-entry.component';
+import { ForecastsListComponent } from './pages/forecasts-list/forecasts-list.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { LocationService } from './services/location.service';
+import { WeatherService } from './services/weather.service';
 
 @NgModule({
   declarations: [
