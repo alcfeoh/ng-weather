@@ -9,6 +9,7 @@ import { ConditionsAndZip } from '../types/conditions-and-zip.type';
 import { CurrentConditions } from '../types/current-conditions.type';
 import { CacheService } from './cache.service';
 import { LocationService } from './location.service';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class WeatherService {
@@ -17,9 +18,10 @@ export class WeatherService {
   static ICON_URL =
     'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions = signal<ConditionsAndZip[]>([]);
-  private http = inject(HttpClient);
-  private locationService = inject(LocationService);
-  private cacheService = inject(CacheService);
+  private readonly http = inject(HttpClient);
+  private readonly locationService = inject(LocationService);
+  private readonly cacheService = inject(CacheService);
+  private readonly notificationService = inject(NotificationService);
 
   // Convert the Signal<string[]> to Observable<string[]>
   private locations$: Observable<string[]> = toObservable(
@@ -76,7 +78,9 @@ export class WeatherService {
         },
         error: () => {
           this.locationService.removeLocation(zipcode);
-          alert(`Failed to fetch weather data for ${zipcode}`);
+          this.notificationService.showError(
+            `Failed to fetch weather data for ${zipcode}`,
+          );
         },
       });
     }

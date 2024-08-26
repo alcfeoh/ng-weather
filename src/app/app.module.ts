@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { CurrentConditionsComponent } from './components/current-conditions/current-conditions.component';
+import { NotificationComponent } from './components/notification/notification.component';
 import { TabComponent } from './components/tab/tab.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { ZipcodeEntryComponent } from './components/zipcode-entry/zipcode-entry.component';
@@ -36,6 +37,7 @@ import { WeatherService } from './services/weather.service';
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production,
     }),
+    NotificationComponent,
   ],
   providers: [LocationService, WeatherService],
   bootstrap: [AppComponent],
