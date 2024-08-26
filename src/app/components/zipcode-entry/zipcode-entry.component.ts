@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LocationService } from 'app/services/location.service';
+import { NotificationService } from 'app/services/notification.service';
 
 @Component({
   selector: 'app-zipcode-entry',
@@ -7,12 +8,13 @@ import { LocationService } from 'app/services/location.service';
 })
 export class ZipcodeEntryComponent {
   private readonly locationService = inject(LocationService);
+  private readonly notificationService = inject(NotificationService);
 
   addLocation(zipcodeInput: HTMLInputElement) {
     const ZIPCODE = zipcodeInput.value;
     const VALIDATION_ERROR = this.validateZipcode(ZIPCODE);
     if (VALIDATION_ERROR) {
-      this.showError(VALIDATION_ERROR);
+      this.notificationService.showError(VALIDATION_ERROR);
       return;
     }
 
@@ -36,11 +38,5 @@ export class ZipcodeEntryComponent {
     }
 
     return null;
-  }
-
-  private showError(message: string) {
-    alert(message);
-    // Optimization : replace alert with a more sophisticated notification service.
-    // => this.notificationService.showError(message);
   }
 }
