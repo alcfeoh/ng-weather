@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WeatherService } from 'app/services/weather.service';
 import { Forecast } from '../../types/forecast.type';
@@ -9,8 +9,8 @@ import { Forecast } from '../../types/forecast.type';
   styleUrl: './forecasts-list.component.css',
 })
 export class ForecastsListComponent {
-  protected weatherService: WeatherService;
-  private route: ActivatedRoute;
+  protected weatherService = inject(WeatherService);
+  private route = inject(ActivatedRoute);
   zipcode: string;
   forecast: Forecast;
 
