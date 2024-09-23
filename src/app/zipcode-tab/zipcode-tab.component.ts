@@ -17,4 +17,8 @@ export class ZipcodeTabComponent {
   showDetails() {
 
   }
+
+  removeLocation() {
+    //emit to remove the location in the parent component?
+  }
 }
