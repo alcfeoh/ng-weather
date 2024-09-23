@@ -10,7 +10,11 @@ export class ZipcodeTabComponent {
   @Input() location: string;
   @Input() zip: string;
 
+
   constructor() {
   }
 
+  showDetails() {
+
+  }
 }
