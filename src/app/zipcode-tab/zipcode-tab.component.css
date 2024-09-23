@@ -1,0 +1,18 @@
+.tab {
+  width: 200px; /* Set your desired width */
+  display: inline-block; /* Ensure the tab is treated as a block element */
+  text-align: center; /* Center the text inside the tab */
+  padding: 10px; /* Add some padding for better appearance */
+  border: 1px solid #ccc; /* Optional: Add a border */
+  background-color: #f9f9f9; /* Optional: Add a background color */
+}
+
+.tab-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

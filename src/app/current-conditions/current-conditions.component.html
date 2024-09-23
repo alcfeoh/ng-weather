@@ -1,7 +1,7 @@
 <div>
   <div *ngFor="let location of currentConditionsByZip()" class="well flex" (click)="showForecast(location.zip)">
-    <div>
-      <h3>{{location.data.name}} ({{location.zip}})</h3>
+    <app-zipcode-tab [location]="location.data.name" [zip]="location.zip"></app-zipcode-tab>
+<!--     <div>
       <h4>Current conditions: {{location.data.weather[0].main}}</h4>
       <h4>Temperatures today:</h4>
       <p>
@@ -16,6 +16,6 @@
     <div>
       <span class="close" (click)="locationService.removeLocation(location.zip)">&times;</span>
       <img [src]="weatherService.getWeatherIcon(location.data.weather[0].id)">
-    </div>
+    </div> -->
  </div>
 </div>
