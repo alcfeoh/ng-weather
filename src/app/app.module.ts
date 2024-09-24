@@ -15,6 +15,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ZipcodeTabComponent } from './zipcode-tab/zipcode-tab.component';
+import { TabService } from './tab.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { ZipcodeTabComponent } from './zipcode-tab/zipcode-tab.component';
     routing,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [LocationService, WeatherService],
+  providers: [LocationService, WeatherService, TabService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
