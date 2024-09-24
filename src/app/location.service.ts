@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { CacheStorageService } from './cache-storage.service';
 
 export const LOCATIONS: string = "locations";
 
@@ -8,7 +9,6 @@ export class LocationService {
 
   private locations: string[] = [];
   private locations$: Subject<string[]> = new Subject<string[]>();
-
   constructor() {}
 
   addLocation(zipcode: string) {
@@ -17,7 +17,8 @@ export class LocationService {
   }
 
   removeLocation(zipcode: string) {
-    this.locations = this.locations.filter(location => location !== zipcode);
+    this.locations = this.locations.filter(location => location !== zipcode);   
+
     this.locations$.next(this.locations.length > 0 ? this.locations : ['']);
   }
 

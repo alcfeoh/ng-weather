@@ -16,6 +16,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ZipcodeTabComponent } from './zipcode-tab/zipcode-tab.component';
 import { TabService } from './tab.service';
+import { CacheStorageService } from './cache-storage.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { TabService } from './tab.service';
     routing,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [LocationService, WeatherService, TabService],
+  providers: [LocationService, WeatherService, TabService, CacheStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
