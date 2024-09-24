@@ -17,12 +17,11 @@ export class LocationService {
   }
 
   removeLocation(zipcode: string) {
+console.table(this.locations);    
     this.locations = this.locations.filter(location => location !== zipcode);
-    this.locations$.next(this.locations);
-  }
-
-  getLocations() {
-    return [...this.locations];
+    console.log('removing location', zipcode);
+    console.table(this.locations);
+    this.locations$.next(this.locations.length > 0 ? this.locations : ['']);
   }
 
   getLocationsObservable() {

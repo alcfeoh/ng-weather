@@ -1,5 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { TabService } from '../tab.service';
+import { LocationService } from '../location.service';
 
 @Component({
   selector: 'app-zipcode-tab',
@@ -10,13 +11,17 @@ export class ZipcodeTabComponent {
   @Input() location: string;
   @Input() zip: string;
   private tabService = inject(TabService);
+  protected locationService = inject(LocationService);
 
   selectTab(zip: string) {
+    //set active tab style
+
     this.tabService.selectTab(zip);
   }
 
   removeLocation(zip: string) {
-    //emit to remove the location in the parent component?
+    console.log('removing location', zip);
+    this.locationService.removeLocation(zip);
   }
 }
 
