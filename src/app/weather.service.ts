@@ -1,5 +1,5 @@
-import {inject, Injectable, Signal, signal} from '@angular/core';
-import {Observable} from 'rxjs';
+import {inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {Observable, zip} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
@@ -19,23 +19,43 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   addCurrentConditions(zipcode: string): void {
-    this.currentConditions.update(() => []);
-
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     //the app won’t make HTTP requests for any single location more than once every 2 hours.
-    let currentConditions = this.cacheStorageService.getCache('currentConditions');
-    if (currentConditions) {
-      this.currentConditions.update(conditions => [...conditions, ...currentConditions]);
+    let currentConditionsCachedForZip = this.cacheStorageService.getCache('currentConditions' + zipcode) as ConditionsAndZip[];
+    if (currentConditionsCachedForZip) {
+      const existingConditionIndex = this.currentConditions().findIndex(condition => condition.zip === zipcode);
+      if (existingConditionIndex !== -1) {
+        this.currentConditions.update(conditions => {
+          const updatedConditions = [...conditions];
+          updatedConditions[existingConditionIndex] = currentConditionsCachedForZip[0];
+          return updatedConditions;
+        });
+      } else {
+        this.currentConditions.update(conditions => [...conditions, ...currentConditionsCachedForZip]);
+      }      
       return;
     }
-console.log('getting current condition data http request');  
+
     this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
       .subscribe(data => {
-          this.currentConditions.update(conditions => [...conditions, {zip: zipcode, data}]);
-          this.cacheStorageService.removeItem('currentConditions');
-          this.cacheStorageService.setCache('currentConditions', this.currentConditions); 
+        const existingConditionIndex = this.currentConditions().findIndex(condition => condition.zip === zipcode);
+
+        if (existingConditionIndex !== -1) { 
+          // Update the existing condition
+          this.currentConditions.update(conditions => {
+            const updatedConditions = [...conditions];
+            updatedConditions[existingConditionIndex] = { zip: zipcode, data };
+            return updatedConditions;
+          });
+        } else {
+          // Add the new condition
+          this.currentConditions.update(conditions => [...conditions, { zip: zipcode, data }]);
         }
-      );
+        this.cacheStorageService.removeItem('currentConditions' + zipcode);
+        this.cacheStorageService.setCache('currentConditions' + zipcode, 
+          this.currentConditions().filter(x => x.zip === zipcode)); 
+      }
+    );
   }
 
   removeCurrentConditions(zipcode: string) {
