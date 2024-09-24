@@ -19,7 +19,6 @@ export class ZipcodeTabComponent {
   }
 
   removeLocation(zip: string) {
-    console.log('removing location', zip);
     this.locationService.removeLocation(zip);
   }
 }
