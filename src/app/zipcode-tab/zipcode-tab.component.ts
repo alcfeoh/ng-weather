@@ -15,7 +15,6 @@ export class ZipcodeTabComponent {
 
   selectTab(zip: string) {
     this.tabService.selectTab(zip);
-    //TODO: set active tab style
   }
 
   removeLocation(zip: string) {

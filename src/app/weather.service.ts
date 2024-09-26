@@ -23,35 +23,47 @@ export class WeatherService {
     //the app won’t make HTTP requests for any single location more than once every 2 hours.
     let currentConditionsCachedForZip = this.cacheStorageService.getCache('currentConditions' + zipcode) as ConditionsAndZip[];
     if (currentConditionsCachedForZip) {
+console.log('cached current conditions found for zip: ' + zipcode);      
       const existingConditionIndex = this.currentConditions().findIndex(condition => condition.zip === zipcode);
+      
+      //found existing condition in the currentConditions
       if (existingConditionIndex !== -1) {
+        // Update the existing current condition from the cache
         this.currentConditions.update(conditions => {
           const updatedConditions = [...conditions];
           updatedConditions[existingConditionIndex] = currentConditionsCachedForZip[0];
           return updatedConditions;
         });
       } else {
+        // existing condition not found in the currentConditions
+        // Add the new current condition from the cache
         this.currentConditions.update(conditions => [...conditions, ...currentConditionsCachedForZip]);
-      }      
+      }
+      //current condition data has been added or updated from the cache
+      //don't get data from http request      
       return;
     }
 
+console.log('http request to get current conditions. no cached data found for zip: ' + zipcode);
     this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
       .subscribe(data => {
         const existingConditionIndex = this.currentConditions().findIndex(condition => condition.zip === zipcode);
 
+        //found existing condition in the currentConditions
         if (existingConditionIndex !== -1) { 
-          // Update the existing condition
+          // Update the existing current condition from the cache
           this.currentConditions.update(conditions => {
             const updatedConditions = [...conditions];
             updatedConditions[existingConditionIndex] = { zip: zipcode, data };
             return updatedConditions;
           });
         } else {
-          // Add the new condition
+        // existing condition not found in the currentConditions
+        // Add the new current condition from the http get request
           this.currentConditions.update(conditions => [...conditions, { zip: zipcode, data }]);
         }
         this.cacheStorageService.removeItem('currentConditions' + zipcode);
+        // Cache the current conditions for the zipcode
         this.cacheStorageService.setCache('currentConditions' + zipcode, 
           this.currentConditions().filter(x => x.zip === zipcode)); 
       }

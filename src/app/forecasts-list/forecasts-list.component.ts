@@ -19,17 +19,24 @@ export class ForecastsListComponent {
     route.params.subscribe(params => {
       this.zipcode = params['zipcode'];
           //the app won’t make HTTP requests for any single location more than once every 2 hours.
-      let forecast = this.cacheStorageService.getCache('forecast');
-      if (forecast) {
-        this.forecast = forecast;
+
+      let forecastCachedForZip = this.cacheStorageService.getCache('forecast' + this.zipcode) as Forecast;
+console.table(forecastCachedForZip);      
+      if (forecastCachedForZip) {
+console.log('cached forecast found for zip: ' + this.zipcode);      
+        this.forecast = forecastCachedForZip;
+        //current condition data has been added or updated from the cache
+        //don't get data from http request      
         return;
-      }
-console.log('getting forecast data http request');      
+      }      
+
+console.log('http request to get forecast. no cached forecast found for zip: ' + this.zipcode);
       weatherService.getForecast(this.zipcode)
         .subscribe(data => {
           this.forecast = data;
-          this.cacheStorageService.removeItem('forecast');
-          this.cacheStorageService.setCache('forecast', this.forecast); 
+          this.cacheStorageService.removeItem('forecast' + this.zipcode);
+        // Cache the forecast for the zipcode          
+          this.cacheStorageService.setCache('forecast' + this.zipcode, this.forecast); 
         });
       });
   }

@@ -29,6 +29,7 @@ export class CurrentConditionsComponent {
       for (let loc of locations) {
         this.weatherService.addCurrentConditions(loc);   
         if (i === 0) {
+          //select first tab on initial load to show content of first tab
           this.tabService.selectTab(loc);
           this.activeTab();
         }
@@ -42,7 +43,7 @@ export class CurrentConditionsComponent {
   }
 
   activeTab() {
-    let selectedTab = this.currentConditionsByZip().filter(conditions => conditions.zip === this.currentSelectedTab());
-    return selectedTab;
+    //return current selected tab to show tab contents for the selected tab
+    return this.currentConditionsByZip().filter(conditions => conditions.zip === this.currentSelectedTab());
   }
 }
