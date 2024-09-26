@@ -1,6 +1,6 @@
 <div>
   <div class="flex tab-panel">
-    <app-zipcode-tab *ngFor="let location of currentConditionsByZip(); let i = index" [tabIndex]="i" [location]="location.data.name" [zip]="location.zip">
+    <app-zipcode-tab *ngFor="let location of currentConditionsByZip()" [location]="location.data.name" [zip]="location.zip">
     </app-zipcode-tab>
  </div>
  <app-zipcode-tab-content>
