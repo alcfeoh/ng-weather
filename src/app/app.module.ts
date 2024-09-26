@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { ZipcodeTabComponent } from './zipcode-tab/zipcode-tab.component';
 import { TabService } from './tab.service';
 import { CacheStorageService } from './cache-storage.service';
+import { ZipcodeTabContentComponent } from './zipcode-tab-content/zipcode-tab-content.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CacheStorageService } from './cache-storage.service';
     ForecastsListComponent,
     CurrentConditionsComponent,
     MainPageComponent,
-    ZipcodeTabComponent
+    ZipcodeTabComponent,
+    ZipcodeTabContentComponent
   ],
   imports: [
     BrowserModule,

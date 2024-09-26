@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
+import { CONFIG } from './config';
 
 @Injectable()
 export class CacheStorageService {
   private cache = {};
-  private cacheDuration = 120000;//7200000;//2 hours
   private cacheKey = 'cacheStorage';
 
   constructor() {
-    this.loadCache();
+    this.initializeCache();
   }
 
-  private loadCache() {
-    //load cache from local storage
+  // initialize cache from local storage
+  private initializeCache() {
     let cache = localStorage.getItem(this.cacheKey);
     if (cache) {
       this.cache = JSON.parse(cache);
@@ -27,14 +27,14 @@ export class CacheStorageService {
     //set cache value and expiration to cache duration
     this.cache[key] = {
       value: value,
-      expiration: Date.now() + this.cacheDuration
+      expiration: Date.now() + CONFIG.cacheDuration
     };
     this.saveCache();
   }
 
   getCache(key: string) {
     let cache = this.cache[key];
-    //check if cache exists and has not expired
+    //check if cache exists and has not expired. if so, return cached value
     if (cache && cache.expiration > Date.now()) {
       return cache.value;
     }

@@ -7,6 +7,7 @@ export class LocationService {
 
   private locations: string[] = [];
   // store zipcode locations in RXJS Subject
+  // this Subject will emit the updated list of locations whenever there is a change to the locations
   private locations$: Subject<string[]> = new Subject<string[]>();
   constructor() {}
 
@@ -20,7 +21,7 @@ export class LocationService {
     this.locations = this.locations.filter(location => location !== zipcode);   
 
     // remove location from RXJS Subject that was filtered out of the locations array
-    // if there are no locations, add an empty string to the locations array
+    // if there are no locations, add an empty string array to the locations Subject
     this.locations$.next(this.locations.length > 0 ? this.locations : ['']);
   }
 

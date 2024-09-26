@@ -35,7 +35,7 @@ console.log('http request to get forecast. no cached forecast found for zip: ' +
         .subscribe(data => {
           this.forecast = data;
           this.cacheStorageService.removeItem('forecast' + this.zipcode);
-        // Cache the forecast for the zipcode          
+          // cache the forecast for the zipcode          
           this.cacheStorageService.setCache('forecast' + this.zipcode, this.forecast); 
         });
       });

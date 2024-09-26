@@ -45,6 +45,7 @@ console.log('cached current conditions found for zip: ' + zipcode);
     }
 
 console.log('http request to get current conditions. no cached data found for zip: ' + zipcode);
+    if(!zipcode) return;
     this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
       .subscribe(data => {
         const existingConditionIndex = this.currentConditions().findIndex(condition => condition.zip === zipcode);
@@ -80,8 +81,8 @@ console.log('http request to get current conditions. no cached data found for zi
     })
   }
 
-  getCurrentConditions(): Signal<ConditionsAndZip[]> {
-    return this.currentConditions.asReadonly();
+  getCurrentConditions(): WritableSignal<ConditionsAndZip[]> {
+    return this.currentConditions;
   }
 
   getForecast(zipcode: string): Observable<Forecast> {

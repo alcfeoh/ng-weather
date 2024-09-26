@@ -1,4 +1,4 @@
-import {Component, inject, Signal} from '@angular/core';
+import {Component, inject, Signal, WritableSignal} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
 import {Router} from "@angular/router";
@@ -16,7 +16,7 @@ export class CurrentConditionsComponent {
   private weatherService = inject(WeatherService);
   private router = inject(Router);
   protected locationService = inject(LocationService);
-  protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
+  protected currentConditionsByZip: WritableSignal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
   currentConditionsByZip$ = toObservable(this.currentConditionsByZip);
   locations$ = this.locationService.getLocationsObservable();
   private tabService = inject(TabService);
@@ -25,6 +25,7 @@ export class CurrentConditionsComponent {
 
   constructor() {
     this.locations$.subscribe(locations => {
+console.log('locations: ' + locations);      
       let i: number = 0;
       for (let loc of locations) {
         this.weatherService.addCurrentConditions(loc);   
@@ -35,6 +36,10 @@ export class CurrentConditionsComponent {
         }
         i++;
       }
+      //update currentConditionsByZip to filter only the zipcodes that are in the locations array
+      this.currentConditionsByZip.update(() => {
+        return this.currentConditionsByZip().filter(condition => locations.includes(condition.zip));
+      });      
     });
   }
 
