@@ -17,6 +17,10 @@ export class CurrentConditionsComponent {
   private router = inject(Router);
   protected locationService = inject(LocationService);
   protected currentConditionsByZip: WritableSignal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
+  //TODO: revert the above to a readonly signal
+  //create a new writable signal from the readonly signal and use that to display the current conditions
+  //so the currentConditionsbyZip signal can be updated.
+  //not a good idea to expose the current conditions signal as writable in the weather service  
   currentConditionsByZip$ = toObservable(this.currentConditionsByZip);
   locations$ = this.locationService.getLocationsObservable();
   private tabService = inject(TabService);
