@@ -1,10 +1,12 @@
 import {Component, inject, Signal, WritableSignal} from '@angular/core';
 import {WeatherService} from "../weather.service";
-import {LocationService} from "../location.service";
+import {LOCATIONS, LocationService} from "../location.service";
 import {Router} from "@angular/router";
 import { ConditionsAndZip } from '../conditions-and-zip.type';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { TabService } from '../tab.service';
+import { CacheStorageService } from '../cache-storage.service';
+import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-current-conditions',
@@ -26,10 +28,36 @@ export class CurrentConditionsComponent {
   private tabService = inject(TabService);
   protected currentSelectedTab: Signal<string> = this.tabService.selectedTab;
   protected currentSelectedZipConditions: Signal<ConditionsAndZip>;
+  private cacheStorageService = inject(CacheStorageService);
 
   constructor() {
+    //set currentConditionsByZip to values from the cache
+    let cachedLocations = this.cacheStorageService.getCache(LOCATIONS);
+console.table(cachedLocations);    
+    if(cachedLocations) {
+      let currentConditionsCachedForZip: ConditionsAndZip[] = [];
+      let i: number = 0;
+      cachedLocations.forEach(location => {
+        //concat these arrays to get all the current conditions from the cache
+        currentConditionsCachedForZip = currentConditionsCachedForZip.concat(this.cacheStorageService.getCache('currentConditions' + location) as ConditionsAndZip[]);
+        if (i === 0) {
+          //select first tab on initial load to show content of first tab
+          this.tabService.selectTab(location);
+          this.activeTab();
+        }
+        i++;
+      });
+      this.currentConditionsByZip.update(() => {
+        return currentConditionsCachedForZip;
+      });
+    }
     this.locations$.subscribe(locations => {
-console.log('locations: ' + locations);      
+      this.loadCurrentConditions(locations);
+    });
+  }
+
+  loadCurrentConditions(locations: string[]) {
+    console.log('locations: ' + locations);      
       let i: number = 0;
       for (let loc of locations) {
         this.weatherService.addCurrentConditions(loc);   
@@ -43,8 +71,7 @@ console.log('locations: ' + locations);
       //update currentConditionsByZip to filter only the zipcodes that are in the locations array
       this.currentConditionsByZip.update(() => {
         return this.currentConditionsByZip().filter(condition => locations.includes(condition.zip));
-      });      
-    });
+      });   
   }
 
   showForecast(zipcode : string){

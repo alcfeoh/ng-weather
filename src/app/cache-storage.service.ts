@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CONFIG } from './config';
+import { Forecast } from './forecasts-list/forecast.type';
+import { ConditionsAndZip } from './conditions-and-zip.type';
 
 @Injectable()
 export class CacheStorageService {
@@ -23,7 +25,7 @@ export class CacheStorageService {
     localStorage.setItem(this.cacheKey, JSON.stringify(this.cache));
   }
 
-  setCache(key: string, value: any) {
+  setCache<T>(key: string, value: T) {
     //set cache value and expiration to cache duration
     this.cache[key] = {
       value: value,
