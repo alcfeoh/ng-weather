@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CONFIG } from './config';
-import { Forecast } from './forecasts-list/forecast.type';
-import { ConditionsAndZip } from './conditions-and-zip.type';
 
 @Injectable()
 export class CacheStorageService {
