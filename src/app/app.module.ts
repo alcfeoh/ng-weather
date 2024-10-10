@@ -14,6 +14,10 @@ import {routing} from "./app.routing";
 import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ZipcodeTabComponent } from './zipcode-tab/zipcode-tab.component';
+import { TabService } from './tab.service';
+import { CacheStorageService } from './cache-storage.service';
+import { ZipcodeTabContentComponent } from './zipcode-tab-content/zipcode-tab-content.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,9 @@ import { environment } from '../environments/environment';
     ZipcodeEntryComponent,
     ForecastsListComponent,
     CurrentConditionsComponent,
-    MainPageComponent
+    MainPageComponent,
+    ZipcodeTabComponent,
+    ZipcodeTabContentComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +37,7 @@ import { environment } from '../environments/environment';
     routing,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [LocationService, WeatherService],
+  providers: [LocationService, WeatherService, TabService, CacheStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
