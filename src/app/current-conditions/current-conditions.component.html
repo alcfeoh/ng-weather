@@ -1,21 +1,28 @@
 <div>
-  <div *ngFor="let location of currentConditionsByZip()" class="well flex" (click)="showForecast(location.zip)">
-    <div>
-      <h3>{{location.data.name}} ({{location.zip}})</h3>
-      <h4>Current conditions: {{location.data.weather[0].main}}</h4>
-      <h4>Temperatures today:</h4>
-      <p>
-        Current {{location.data.main.temp | number:'.0-0'}}
-        - Max {{location.data.main.temp_max | number:'.0-0'}}
-        - Min {{location.data.main.temp_min | number:'.0-0'}}
-      </p>
-      <p>
-        <a [routerLink]="['/forecast', location.zip]" >Show 5-day forecast for {{location.data.name}}</a>
-      </p>
-    </div>
-    <div>
-      <span class="close" (click)="locationService.removeLocation(location.zip)">&times;</span>
-      <img [src]="weatherService.getWeatherIcon(location.data.weather[0].id)">
-    </div>
+  <div class="flex tab-panel">
+    <app-zipcode-tab *ngFor="let location of currentConditionsByZip()" [location]="location.data.name" [zip]="location.zip">
+    </app-zipcode-tab>
  </div>
+ <app-zipcode-tab-content>
+  <!-- use content projection to display the current conditions for the selected location -->
+  <div *ngFor="let location of activeTab()">
+    <div class="tab-content p-4">
+      <div class="well">
+        <h4>Current conditions: {{location.data.weather[0].main}}</h4>
+        <h4>Temperatures today:</h4>
+        <p>
+          Current {{location.data.main.temp | number:'.0-0'}}
+          - Max {{location.data.main.temp_max | number:'.0-0'}}
+          - Min {{location.data.main.temp_min | number:'.0-0'}}
+        </p>
+        <p>
+          <a [routerLink]="['/forecast', location.zip]">Show 5-day forecast for {{location.data.name}}</a>
+        </p>
+        <div>
+          <img [src]="weatherService.getWeatherIcon(location.data.weather[0].id)">
+        </div>
+      </div>
+    </div>
+  </div>          
+ </app-zipcode-tab-content>
 </div>
